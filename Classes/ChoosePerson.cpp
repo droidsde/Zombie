@@ -10,8 +10,7 @@
 #include "GiftLayer.h"
 #include "LuckLayer.h"
 static const int image_tag_operter = 10;
-
-enum ButtonTag 
+enum ButtonTag
 {
 	ButtonTagRole_1 = 401,
 	ButtonTagRole_2 = 402,
@@ -21,12 +20,12 @@ enum ButtonTag
 	ButtonTagBuyRole_2 = ButtonTagRole_2*image_tag_operter,
 	ButtonTagBuyRole_3 = ButtonTagRole_3*image_tag_operter,
 
-	ButtonTagBackToMain = 26, 
-	ButtonTagSure = 33   
+	ButtonTagBackToMain = 26,
+	ButtonTagSure = 33
 };
 
 ChoosePerson::ChoosePerson()
-	:focusTag(ButtonTagRole_1)
+:focusTag(ButtonTagRole_2)
 {}
 
 CCScene* ChoosePerson::scene()
@@ -73,9 +72,10 @@ bool ChoosePerson::init()
 	
 	
 //	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("choosePerson.plist");
-
+	
 	//初始化角色信息
 	initRoleInfo();
+
 	//初始化角色动画
 	initRoleAnimation();
 	
@@ -88,7 +88,7 @@ void ChoosePerson::onEnter()
 {
 	CCLayer::onEnter();
 	
-	initRoleInfo();
+	//initRoleInfo();
 	showFocus(focusTag);
 }
 void ChoosePerson::initRoleAnimation()

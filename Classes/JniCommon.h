@@ -6,10 +6,9 @@ using namespace cocos2d::extension;
 #define _JNICOMMON_H_
 enum PayType
 {
-	k_pay_changwan_gift,
+	k_pay_logingif,
 	k_pay_gold10000,
 
-	
 	k_pay_revieve,
 	k_pay_fulllevel,
 	k_pay_bisha,
@@ -18,7 +17,8 @@ enum PayType
 	k_pay_supergift,
 	k_pay_revievegift,
 	k_pay_award,
-	k_pay_logingif,
+	k_pay_story,
+
 	k_pay_exit,
 	k_pay_logingif_free
 	

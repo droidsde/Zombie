@@ -20,6 +20,7 @@
 #include "MultiTipsScene.h"
 #include "GiftLayer.h"
 #include "LuckLayer.h"
+#include "BigBoxLayer.h"
 CCRenderTexture* BattleManage::s_pRenderTexture = NULL;
 
 enum ButtonTag 
@@ -74,7 +75,7 @@ BattleManage* BattleManage::createWithInfo(int hero,int level,bool repeat)
 void BattleManage::onEnter()
 {
 	CCNode::onEnter() ;
-
+	m_gameover = false;
 	this->setTouchEnabled(true);
 	CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, 1, false);
 }
@@ -1073,6 +1074,8 @@ void BattleManage::showWinLayer(bool issuccess)
 
 	CCLOG("winlayer1 ");
 	*/
+	
+
 	int randomGold = CCRANDOM_0_1()*40 + 510;
 
 	GameLevel& gl = RunningData::getInstance()->getGameLevel();
@@ -1086,12 +1089,6 @@ void BattleManage::showWinLayer(bool issuccess)
 	br.killedZombieNum = killedTotalZombie;
 	br.remainBlood = m_hero_blood/m_hero_total_blood * 100;
 	//pScene->addChild(WinLayer::create(br));
-	addChild(WinLayer::create(br),1002,111111);
-
-	//添加抽奖的Layer
-	LuckLayer * luckLayer = LuckLayer::create();
-
-	addChild(luckLayer,1100);
 
 	//添加vip
 
@@ -1101,10 +1098,15 @@ void BattleManage::showWinLayer(bool issuccess)
 	{
 		//CCUserDefault::sharedUserDefault()->getIntegerForKey();
 // 		luckLayer->setVisible(false);
-// 		std::function<void()> m_callBack = [=]()
-// 		{
-// 			luckLayer->setVisible(true);
-// 		};
+		std::function<void()> m_callBack = [=]()
+		{
+			addChild(WinLayer::create(br), 1002, 111111);
+
+			//添加抽奖的Layer
+			LuckLayer * luckLayer = LuckLayer::create();
+
+			addChild(luckLayer, 1100);
+		};
 
 // 		if (!CCUserDefault::sharedUserDefault()->getBoolForKey("vip", false))
 // 		{
@@ -1113,7 +1115,20 @@ void BattleManage::showWinLayer(bool issuccess)
 // 			layer->setFailCallFun(m_callBack);
 // 			layer->setSuccessCallFun(m_callBack);
 // 		}
+		BigBoxLayer * boxLayer = BigBoxLayer::create();
+		boxLayer->setCallFun(m_callBack);
+		addChild(boxLayer,100);
 		
+	}
+	else
+	{
+		addChild(WinLayer::create(br), 1002, 111111);
+
+		//添加抽奖的Layer
+		LuckLayer * luckLayer = LuckLayer::create();
+
+		addChild(luckLayer, 1100);
+
 	}
 
 
@@ -1541,6 +1556,8 @@ void BattleManage::showBisha()
 	scheduleOnce(schedule_selector(BattleManage::setWordsInvisible),1.5);
 	showbishaEffect(0.0);
 	scheduleOnce(schedule_selector(BattleManage::removeBisha),m_kill_time);
+
+
 }
 
 void BattleManage::setWordsInvisible(float dt)
@@ -1614,6 +1631,11 @@ void BattleManage::removeBisha(float dt)
 	iskillingall = false;
 	unschedule(schedule_selector(BattleManage::reduceEnemyHpByTime));
 	unschedule(schedule_selector(BattleManage::showbishaEffect));
+
+	if (m_gameover)
+	{
+		showWinLayer(true);
+	}
 }
 
 void BattleManage::showbishaEffect(float dt)
@@ -1676,9 +1698,9 @@ bool BattleManage::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 {
 	//点击屏幕
 	
-#if (CC_TARGET_PLATFORM==CC_PLATFORM_WIN32)
-	showWinLayer(true);
-#endif
+// #if (CC_TARGET_PLATFORM==CC_PLATFORM_WIN32)
+// 	showWinLayer(true);
+// #endif
 	CCLOG("touchBegan!!") ;
 	float x = pTouch->getLocation().x;
 	float y = pTouch -> getLocation().y;
@@ -1760,6 +1782,7 @@ void BattleManage::addTipsWords(int waves)
 	else if (currentLevel == 1 && waves == 7)
 	{
 		scheduleOnce(schedule_selector(BattleManage::showTipsThree),6.0f);
+		m_gameover = true;
 	}
 	else if (currentLevel == 1 && waves == 11)
 	{
@@ -1770,6 +1793,7 @@ void BattleManage::addTipsWords(int waves)
 	{
 		warningWord -> setVisible(true);
 		scheduleOnce(schedule_selector(BattleManage::setWordsInvisible),4.0);
+
 	}
 	else if (currentLevel == 6 && waves == 6)
 	{

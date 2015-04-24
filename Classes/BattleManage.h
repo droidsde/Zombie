@@ -193,4 +193,6 @@ private:
 	void showSuccessDelay(float dt);
 	bool isshowingSuccessDelay;
 	CCLabelTTF* overGameTips;	void showWinLayer(bool issuccess = false);
+
+	bool m_gameover;
 };

@@ -145,6 +145,10 @@ void GiftLayer::onButtonClick(CCObject * obj, TouchEventType eventType)
 		{
 			callSuccess(m_payType);
 		}
+		else if (m_payType == k_pay_exit)
+		{
+			payCode(k_pay_logingif, this, Sel_Pay_Event(&GiftLayer::payCallBack));
+		}
 		else
 		{
 			payCode((int)m_payType, this, Sel_Pay_Event(&GiftLayer::payCallBack));

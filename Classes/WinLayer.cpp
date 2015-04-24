@@ -109,9 +109,16 @@ void WinLayer::buttonClicked(CCObject *pSender, TouchEventType eType)
 		{
 			CCLOG("nextLevel") ;
 			GameLevel& gl = RunningData::getInstance()->getGameLevel();
-			if (gl.getStage() == 1)
+			if (gl.getStage() == 2)
 			{
-				CCDirector::sharedDirector()->replaceScene(ChoosePerson::scene());
+
+				CCScene *scene = CCScene::create();
+
+				// 'layer' is an autorelease object
+				RunningData::getInstance()->currentHero = 1;
+				ChoosePerson *layer = ChoosePerson::create();
+				scene->addChild(layer);
+				CCDirector::sharedDirector()->replaceScene(scene);
 			}
 			else
 			CCDirector::sharedDirector()->replaceScene(LevelInstruction::scene(false));

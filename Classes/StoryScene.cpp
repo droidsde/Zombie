@@ -463,7 +463,7 @@ void StoryScene::buttonClicked(CCObject *pSender, TouchEventType eType)
 		{
 			//CCDirector::sharedDirector()->replaceScene(ChoosePerson::scene());
 			//CCLOG("skip") ;
-			payCode(k_pay_changwan_gift, this, Sel_Pay_Event(&StoryScene::payCallBack));
+			payCode(k_pay_story, this, Sel_Pay_Event(&StoryScene::payCallBack));
 	
 		}
 		
